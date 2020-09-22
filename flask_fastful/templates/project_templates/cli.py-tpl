@@ -1,0 +1,16 @@
+# encoding: utf-8
+from models import db
+import click
+from flask.cli import with_appcontext
+from flask import current_app
+import logging
+
+@click.command("db.create_all", short_help="数据库表创建")
+@with_appcontext
+def db_create_all():
+    db.create_all()
+    current_app.logger.info("db create done")
+
+
+def init_app(app):
+    app.cli.add_command(db_create_all)

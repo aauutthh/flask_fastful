@@ -30,10 +30,10 @@ def startproject(projectname, dstdir):
         "project_name": projectname,
     }
 
-    for f in glob("*.py-tpl"):
+    for f in glob("*.*-tpl"):
         rend_file_with_relpath(f, dstdir, ctx)
 
-    for f in glob("**/*.py-tpl"):
+    for f in glob("**/*.*-tpl"):
         rend_file_with_relpath(f, dstdir, ctx)
 
     log.info("----- all done -----")

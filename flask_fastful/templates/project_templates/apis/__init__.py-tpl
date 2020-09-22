@@ -2,4 +2,4 @@
 __all__ = ["api"]
 from .api import api
 from flask_fastful.utils.importers import GlobImport
-GlobImport("api_*.py")
+GlobImport("apis/api_*.py")

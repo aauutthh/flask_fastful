@@ -1,0 +1,5 @@
+project_name: {{project_name}}
+
+SQLALCHEMY_TRACK_MODIFICATIONS: True
+
+SQLALCHEMY_DATABASE_URI: sqlite:////tmp/{{project_name}}.db

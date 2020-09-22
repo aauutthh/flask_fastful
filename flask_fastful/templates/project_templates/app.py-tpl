@@ -1,13 +1,16 @@
 # encoding: utf-8
-import logging
-logging.basicConfig(level=logging.INFO)
+from flask_fastful.utils import Fastful
+Fastful.init()
 from flask import Flask
-from apis.api import api
-import apis.api_demo
+from apis import api
+from models import db
+import cli
 
 app = Flask("{{project_name}}")
-app.config["project_name"] = "{{project_name}}"
+Fastful.init_app(app)
 api.init_app(app)
+db.init_app(app)
+cli.init_app(app)
 
 if __name__ == "__main__":
     # PYTHONPATH=`pwd`/{{project_name}} gunicorn app:app

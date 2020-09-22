@@ -1,0 +1,45 @@
+version: 1
+
+formatters:
+  simple:
+    format: "%(levelname)s|%(name)s:%(lineno)d|%(message)s"
+
+  complex:
+    format: "%(asctime)s|%(levelname)s|%(name)s:%(lineno)d|%(funcName)s|%(message)s"
+
+handlers:
+  console:
+    class: logging.StreamHandler
+    level: INFO
+    formatter: simple
+
+  rotfile:
+    class: logging.handlers.TimedRotatingFileHandler
+    when: midnight
+    backupCount: 5
+    level: INFO
+    formatter: complex
+    filename : ./logs/{{project_name}}.log
+
+root:
+  level: INFO
+  handlers: [rotfile]
+  propagate: yes
+
+#
+#loggers:
+#
+#  any-logger-you-want:   
+#    level: DEBUG
+#    handlers: [console]
+#    propagate: yes
+#
+#  可指定对某个模块进行debug
+#  比如对 requests库的输出可以配置如下
+#  # propagate 将会传播你指定的配置到下一级的logger
+#
+#  requests:   
+#    level: DEBUG
+#    handlers: [console]
+#    propagate: yes
+
