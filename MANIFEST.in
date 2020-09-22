@@ -1,1 +1,2 @@
-global-include templates/**/*.py templates/**/*.py-tpl
+global-include templates/**/*.py-tpl
+global-exclude __pycache__ .mypy_cache

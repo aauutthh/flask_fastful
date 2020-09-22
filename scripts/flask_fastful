@@ -1,2 +1,1 @@
-#!/bin/env python
-print("hello")
+../flask_fastful/__main__.py

@@ -5,11 +5,11 @@ from flask import Flask
 from apis.api import api
 import apis.api_demo
 
-app = Flask({{name}})
-app.config["name"] = "{{name}}"
+app = Flask("{{project_name}}")
+app.config["project_name"] = "{{project_name}}"
 api.init_app(app)
 
 if __name__ == "__main__":
-    # PYTHONPATH=`pwd`/{{name}} gunicorn app:app
+    # PYTHONPATH=`pwd`/{{project_name}} gunicorn app:app
     app.run(port=8000)
 
