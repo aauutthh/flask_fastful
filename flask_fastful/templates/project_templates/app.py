@@ -1,0 +1,15 @@
+# encoding: utf-8
+import logging
+logging.basicConfig(level=logging.INFO)
+from flask import Flask
+from apis.api import api
+import apis.api_demo
+
+app = Flask(__name__)
+app.config["name"] = "{{name}}"
+api.init_app(app)
+
+if __name__ == "__main__":
+    # PYTHONPATH=`pwd`/{{name}} gunicorn app:app
+    app.run(port=8000)
+

@@ -1,0 +1,1 @@
+global-include templates/**/*.py templates/**/*.py-tpl
