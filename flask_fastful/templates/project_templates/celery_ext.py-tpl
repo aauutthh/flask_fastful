@@ -1,0 +1,4 @@
+from flask_fastful.utils.fastful import FlaskCelery
+
+celery_app = FlaskCelery()
+

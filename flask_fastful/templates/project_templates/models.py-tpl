@@ -1,5 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
-db = SQLAlchemy()
+from flask_fastful.utils.fastful import ModelPrefix
+
+db = SQLAlchemy(model_class=ModelPrefix("{{project_name}}_"))
 
 
 ## 在下面添加Model, 示例的Demo可以删除

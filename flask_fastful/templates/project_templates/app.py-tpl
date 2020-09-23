@@ -1,9 +1,10 @@
 # encoding: utf-8
-from flask_fastful.utils import Fastful
+from flask_fastful.utils.fastful import Fastful
 Fastful.init()
 from flask import Flask
 from apis import api
 from models import db
+from celery_ext import celery_app
 import cli
 
 app = Flask("{{project_name}}")
@@ -11,6 +12,7 @@ Fastful.init_app(app)
 api.init_app(app)
 db.init_app(app)
 cli.init_app(app)
+celery_app.init_app(app)
 
 if __name__ == "__main__":
     # PYTHONPATH=`pwd`/{{project_name}} gunicorn app:app

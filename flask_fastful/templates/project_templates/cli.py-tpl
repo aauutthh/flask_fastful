@@ -3,14 +3,28 @@ from models import db
 import click
 from flask.cli import with_appcontext
 from flask import current_app
-import logging
+import os
+log = lambda :current_app.logger
 
 @click.command("db.create_all", short_help="数据库表创建")
 @with_appcontext
 def db_create_all():
     db.create_all()
-    current_app.logger.info("db create done")
+    log.info("db create done")
+
+@click.command("run_worker", short_help="run celery worker")
+@click.option("-l","--level", type=click.Choice("CRITICAL|FATAL|ERROR|WARN|WARNING|INFO|DEBUG|NOTSET".lower().split("|")), default="info")
+@with_appcontext
+def celery_worker(level):
+    os.execvp("celery", [
+        "celery",
+        "-A", "tasks:celery_app",
+        "worker",
+        "--loglevel", level
+    ])
+
 
 
 def init_app(app):
     app.cli.add_command(db_create_all)
+    app.cli.add_command(celery_worker)
