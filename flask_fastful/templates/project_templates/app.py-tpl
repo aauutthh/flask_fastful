@@ -6,6 +6,7 @@ from apis import api
 from models import db
 from celery_ext import celery_app
 from flask_migrate import Migrate
+from flask_alchemydumps import AlchemyDumps
 import cli
 
 app = Flask("{{project_name}}")
@@ -15,6 +16,7 @@ db.init_app(app)
 cli.init_app(app)
 celery_app.init_app(app)
 migrate = Migrate(app, db)
+alchemydumps = AlchemyDumps(app, db)
 
 if __name__ == "__main__":
     # PYTHONPATH=`pwd`/{{project_name}} gunicorn app:app

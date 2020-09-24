@@ -23,18 +23,37 @@ class Fastful():
 from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.ext.declarative import declarative_base
 
-def ModelPrefix(prefix):
-    Base = declarative_base()
+def ModelBaseBuilder(prefix=""):
+    _Base = declarative_base()
 
-    class PrefixerBase(Base):
+    class Base(_Base):
         __abstract__ = True
         _the_prefix = prefix
+        __display_exclude__ = []
+
+        def __init__(self, *args):
+            cols = list(self.__table__.columns)
+            l = min(len(cols)-1, len(args))
+            for i, col in enumerate(cols[1:l+1]):
+                setattr(self, col.name, args[i])
+
 
         @declared_attr
         def __tablename__(cls):
             return cls._the_prefix + cls.__name__.lower()
 
-    return PrefixerBase
+        def _filter(self, k, v, filterNone=False):
+            return k.startswith("_sa_") or \
+                k in self.__display_exclude__ or\
+               ( filterNone and v is None)
+
+        def _asDict(self, filterNone=False):
+            return { k:v
+                for k,v in self.__dict__.items()
+                if not self._filter(k,v, filterNone)
+                }
+
+    return Base
 
 
 import flask
