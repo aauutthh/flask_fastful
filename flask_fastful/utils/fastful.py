@@ -1,6 +1,7 @@
 # encoding: utf-8
 import yaml
 from logging.config import dictConfig
+from sqlalchemy import PrimaryKeyConstraint
 
 class Fastful():
     @staticmethod
@@ -31,11 +32,22 @@ def ModelBaseBuilder(prefix=""):
         _the_prefix = prefix
         __display_exclude__ = []
 
-        def __init__(self, *args):
-            cols = list(self.__table__.columns)
-            l = min(len(cols)-1, len(args))
-            for i, col in enumerate(cols[1:l+1]):
+        def __init__(self, *args, **kwargs):
+            # pk = None
+            # for con in self.__table__.constraints:
+            #     if isinstance(con, PrimaryKeyConstraint):
+            #         pk = con
+            #         break
+            #pkname = list(pk.columns)[0].name
+            cols = list(self.__table__.columns)[1:]
+            l = min(len(cols), len(args))
+            for i, col in enumerate(cols[:l]):
                 setattr(self, col.name, args[i])
+            for k, v in kwargs.items():
+                if k in self.__table__.columns:
+                    setattr(self, k, v)
+                else:
+                    raise Exception("column %s not in %s"%(k, self.__table__.name))
 
 
         @declared_attr
