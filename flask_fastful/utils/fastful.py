@@ -25,10 +25,11 @@ from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.ext.declarative import declarative_base
 
 def ModelBaseBuilder(prefix="", bind=None):
-    _Base = declarative_base(bind=bind)
+    _Base = declarative_base()
 
     class Base(_Base):
         __abstract__ = True
+        __bind_key__ = bind
         _the_prefix = prefix
         __display_exclude__ = []
 
