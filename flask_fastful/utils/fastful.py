@@ -23,17 +23,16 @@ class Fastful():
 
 from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.ext.declarative import declarative_base
+from flask_sqlalchemy import Model
 
-def ModelBaseBuilder(prefix="", bind=None):
-    _Base = declarative_base()
+def ModelBaseBuilder(prefix=""):
 
-    class Base(_Base):
+    class Base(Model):
         __abstract__ = True
-        __bind_key__ = bind
         _the_prefix = prefix
         __display_exclude__ = []
 
-        def __init__(self, *args, **kwargs):
+        def set(self, *args, **kwargs):
             # pk = None
             # for con in self.__table__.constraints:
             #     if isinstance(con, PrimaryKeyConstraint):
@@ -49,6 +48,7 @@ def ModelBaseBuilder(prefix="", bind=None):
                     setattr(self, k, v)
                 else:
                     raise Exception("column %s not in %s"%(k, self.__table__.name))
+            return self
 
 
         @declared_attr
