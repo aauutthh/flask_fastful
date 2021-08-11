@@ -4,7 +4,9 @@ import click
 from flask.cli import with_appcontext
 from flask import current_app
 import os
-log = lambda :current_app.logger
+import models
+import logging
+log = logging.getLogger(__name__)
 
 @click.command("db.create_all", short_help="数据库表创建")
 @with_appcontext
@@ -12,19 +14,60 @@ def db_create_all():
     db.create_all()
     log.info("db create done")
 
+def load_data(db, cls_name, datas):
+    CLS = db.Model._decl_class_registry.get(cls_name, None)
+    if not CLS:
+        return False
+    log.info("table name: %s", CLS.__table__.name)
+    db.session.execute(CLS.__table__.delete())
+    db.session.commit()
+    recs = []
+    count = 0
+    for data in datas:
+        rec = CLS(*data)
+        recs.append(rec)
+        if len(recs) > 100:
+            count += 100
+            db.session.bulk_save_objects(recs)
+            db.session.commit()
+            recs = []
+            log.info("---- %s line inserted  ----", count)
+    count += len(recs)
+    db.session.bulk_save_objects(recs)
+    db.session.commit()
+    log.info("---- %s line inserted  ----", count)
+    return True
+
+@click.command("db.load_init_data", short_help="初始数据导入")
+@with_appcontext
+def db_load_init_data():
+    from glob import glob
+    import yaml
+    for fn in glob("init_data/*.yaml"):
+        with open(fn, "r") as f:
+            log.info("loading %s", fn)
+            data = yaml.safe_load(f)
+            for k, v in data.items():
+                load_data(db, k, v)
+            log.info("load %s done", fn)
+
+
+
 @click.command("run_worker", short_help="run celery worker")
 @click.option("-l","--level", type=click.Choice("CRITICAL|FATAL|ERROR|WARN|WARNING|INFO|DEBUG|NOTSET".lower().split("|")), default="info")
 @with_appcontext
 def celery_worker(level):
     os.execvp("celery", [
         "celery",
-        "-A", "tasks:celery_app",
+        "-A", "worker:celery_app",
         "worker",
-        "--loglevel", level
+        "--loglevel", level,
+        "--beat",
     ])
 
 
 
 def init_app(app):
     app.cli.add_command(db_create_all)
+    app.cli.add_command(db_load_init_data)
     app.cli.add_command(celery_worker)

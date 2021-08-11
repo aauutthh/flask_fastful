@@ -3,6 +3,9 @@ project_name: {{project_name}}
 SQLALCHEMY_TRACK_MODIFICATIONS: True
 
 SQLALCHEMY_DATABASE_URI: sqlite:////tmp/{{project_name}}.db
+#SQLALCHEMY_DATABASE_URI: mysql+pymysql://user:pswd@ip:port/db
+#SQLALCHEMY_BINDS:
+#  second_db: mysql+pymysql://user:pswd@ip:port/second_db
 
 CELERY_CONFIG:
   broker_url: redis://localhost:6379/1

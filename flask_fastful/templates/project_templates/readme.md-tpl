@@ -1,0 +1,38 @@
+---
+title:  readme
+date:   2021-08-11
+author: danielli
+options:
+  vim: colorcolumn=80
+---
+
+# readme
+
+## 服务管理
+
+1. 启动app
+
+    ```bash
+    python app.py
+    curl http://localhost:8000/demo
+    ```
+
+    业务启动建议:
+
+    ```bash
+    gunicorn app:app --log-level debug -b '0.0.0.0:8000'
+    ```
+
+1. 启动celery
+
+    ```bash
+    celery worker -A worker:celery_app  --loglevel=debug -c5 --max-tasks-per-child=5 --beat -s /tmp/celerybeat-schedule
+    ```
+
+    说明:
+
+    - `--beat` 用于定时任务触发
+    - `-s` 为beat指定临时数据目录
+
+## 参考
+

@@ -1,5 +1,5 @@
-# encoding: utf-8
 #!/bin/env python
+# encoding: utf-8
 import logging
 log = logging.getLogger(__name__)
 

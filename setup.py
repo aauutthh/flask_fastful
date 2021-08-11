@@ -20,7 +20,7 @@ setup(name='flask_fastful',
         'flask_fastful.templates',
         ],
       package_data = {
-        'flask_fastful.templates': ['project_templates/*.py'],
+        'flask_fastful.templates': ['project_templates/**/*-tpl'],
         '': ["*.py", "*.py-tpl"],
         },
       scripts=['scripts/flask_fastful'],

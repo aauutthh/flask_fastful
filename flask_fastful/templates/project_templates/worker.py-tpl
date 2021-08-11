@@ -1,0 +1,3 @@
+from celery_ext import celery_app
+import app
+import tasks
