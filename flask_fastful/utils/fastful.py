@@ -6,7 +6,7 @@ from sqlalchemy import PrimaryKeyConstraint
 class Fastful():
     @staticmethod
     def init_log():
-        with open("conf/log.config.yaml", "r") as f:
+        with open("conf/log.config.yaml", "r", encoding='UTF-8') as f:
             logconfig = yaml.safe_load(f)
             dictConfig(logconfig)
 
@@ -16,7 +16,7 @@ class Fastful():
 
     @staticmethod
     def init_app(app):
-        with open("conf/flask.config.yaml", "r") as f:
+        with open("conf/flask.config.yaml", "r", encoding='UTF-8') as f:
             flaskconfig = yaml.safe_load(f)
             app.config.update(flaskconfig)
 
