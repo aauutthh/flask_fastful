@@ -1,5 +1,6 @@
 # encoding: utf-8
 __all__ = ["api"]
+import os
 from .api import api
 from flask_fastful.utils.importers import GlobImport
-GlobImport("apis/api_*.py")
+GlobImport(f"apis{os.sep}api_*.py")
