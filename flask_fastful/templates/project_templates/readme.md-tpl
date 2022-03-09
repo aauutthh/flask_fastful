@@ -34,5 +34,15 @@ options:
     - `--beat` 用于定时任务触发
     - `-s` 为beat指定临时数据目录
 
+## 工具
+
+1. shell
+
+    ```bash
+    flask shell
+    ```
+
+    进入app context shell
+
 ## 参考
 
